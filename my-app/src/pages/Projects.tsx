@@ -12,72 +12,72 @@ interface PortfolioItem {
 const Projects: React.FC = () => {
   const { darkMode } = useContext(ThemeContext); // Get darkMode state
 
-  const [portfolioItems] = useState<PortfolioItem[]>([  //containes the items withing the ProtfolioItem array
+  const [portfolioItems] = useState<PortfolioItem[]>([
     { id: 1, image: require('../images/elevator.png'), title: 'Dead Elevator', description: 'A Visual Novel made in Construct 2.' },
     { id: 2, image: require('../images/undystopia.png'), title: 'Undystopia', description: 'Game concept for a resource management game.' },
     { id: 3, image: require('../images/ikigai.png'), title: 'Ikigai', description: 'A passion project currently Work In Progress.' },
-    { id: 4, image: require('../images/Kotonesch.png'), title: 'Kotone', description: '"Why cant i believe my lie?"' },
+    { id: 4, image: require('../images/Kotonesch.png'), title: 'Kotone', description: '"Why can’t I believe my lie?"' },
   ]);
 
-  const renderItem = ({ item }: { item: PortfolioItem }) => (   //renders the contents within the array
-    <View style={[styles.item, darkMode && styles.darkItem]}>
+  const renderItem = ({ item }: { item: PortfolioItem }) => (
+    <View style={[styles.item, darkMode ? styles.darkItem : styles.lightItem]}>
       <Image source={item.image} style={styles.image} />
-      <Text style={[styles.title, darkMode && styles.darkText]}>{item.title}</Text>
-      <Text style={[styles.description, darkMode && styles.darkText]}>{item.description}</Text>
+      <View style={styles.textContainer}>
+        <Text style={[styles.title, darkMode ? styles.darkText : styles.lightText]}>{item.title}</Text>
+        <Text style={[styles.description, darkMode ? styles.darkText : styles.lightText]}>{item.description}</Text>
+      </View>
     </View>
   );
 
   return (
-    <View style={[styles.container, darkMode && styles.darkContainer]}>
-      <FlatList
-        data={portfolioItems}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={renderItem}
-      />
-    </View>
+    <FlatList
+      data={portfolioItems}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={renderItem}
+      contentContainerStyle={styles.list}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    padding: 10,
-    margin: 10,
-    backgroundColor: '#f2e9e1',
-    borderRadius: 13,
+  list: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
   },
-  darkContainer: {
-    backgroundColor: '#2a273f', 
+  lightItem: {
+    backgroundColor: '#fffaf3', // Rosé Pine Dawn
+  },
+  darkItem: {
+    backgroundColor: '#2a273f', // Rosé Pine Moon
   },
   item: {
     padding: 16,
     marginBottom: 10,
-    alignItems: 'center',
-    backgroundColor: '#f2e9e1',
     borderRadius: 8,
-  },
-  darkItem: {
-    backgroundColor: '#444', 
   },
   image: {
     width: 300,
     height: 100,
     borderRadius: 5,
-    paddingBottom: 10,
+    marginBottom: 10,
+  },
+  textContainer: {
+    width: '100%',
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    paddingTop: 10,
+    textAlign: 'left',
   },
   description: {
     fontSize: 14,
-    textAlign: 'center',
     marginTop: 4,
   },
+  lightText: {
+    color: '#575279', // Dawn
+  },
   darkText: {
-    color: '#fff', 
+    color: '#e0def4', // Moon
   },
 });
 

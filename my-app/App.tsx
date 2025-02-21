@@ -8,9 +8,9 @@ interface ThemeContextType {
   setDarkMode: (mode: boolean) => void;
 }
 
-export const ThemeContext = createContext({ 
+export const ThemeContext = createContext<ThemeContextType>({ 
   darkMode: false,
-  setDarkMode: (mode: boolean) => {},
+  setDarkMode: () => {},
 });
 
 export default function App() {
@@ -34,12 +34,12 @@ export default function App() {
 
   const interpolatedBackgroundColor = backgroundColor.interpolate({
     inputRange: [0, 1],
-    outputRange: ['#faf4ed', '#232136'],
+    outputRange: ['#faf4ed', '#232136'], // Dawn -> Moon
   });
 
   const interpolatedTextColor = textColor.interpolate({
     inputRange: [0, 1],
-    outputRange: ['#000', '#fff'],
+    outputRange: ['#575279', '#e0def4'], // Dawn -> Moon
   });
 
   return (
@@ -54,8 +54,8 @@ export default function App() {
         <Switch 
           value={darkMode} 
           onValueChange={() => setDarkMode(!darkMode)} 
-          thumbColor={darkMode ? "#f4f3f4" : "#81b0ff"} 
-          trackColor={{ false: "#767577", true: "#81b0ff" }}
+          thumbColor={darkMode ? "#c4a7e7" : "#907aa9"} 
+          trackColor={{ false: "#575279", true: "#c4a7e7" }}
         />
       </Animated.View>
     </ThemeContext.Provider>
@@ -68,7 +68,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 20,
-    paddingTop: 10,
   },
   text: {
     fontSize: 20,
