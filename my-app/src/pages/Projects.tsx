@@ -13,10 +13,10 @@ const Projects: React.FC = () => {
   const { darkMode } = useContext(ThemeContext); // Get darkMode state
 
   const [portfolioItems] = useState<PortfolioItem[]>([  //containes the items withing the ProtfolioItem array
-    { id: 1, image: require('./images/Kotonesch.png'), title: 'Portfolio Website', description: 'A portfolio website done with React.' },
-    { id: 2, image: require('./images/Kotonesch.png'), title: 'Inventory Management System', description: 'A simple inventory management website with the relevant functionality.' },
-    { id: 3, image: require('./images/Kotonesch.png'), title: 'Library Management Website', description: 'A library management website for the LRC.' },
-    { id: 4, image: require('./images/Kotonesch.png'), title: 'Art', description: 'I also do a bunch of art.' },
+    { id: 1, image: require('../images/elevator.png'), title: 'Dead Elevator', description: 'A Visual Novel made in Construct 2.' },
+    { id: 2, image: require('../images/undystopia.png'), title: 'Undystopia', description: 'Game concept for a resource management game.' },
+    { id: 3, image: require('../images/ikigai.png'), title: 'Ikigai', description: 'A passion project currently Work In Progress.' },
+    { id: 4, image: require('../images/Kotonesch.png'), title: 'Kotone', description: '"Why cant i believe my lie?"' },
   ]);
 
   const renderItem = ({ item }: { item: PortfolioItem }) => (   //renders the contents within the array
@@ -44,23 +44,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 10,
     margin: 10,
-    backgroundColor: 'rgba(232, 230, 230, 0.9)',
+    backgroundColor: '#f2e9e1',
+    borderRadius: 13,
   },
   darkContainer: {
-    backgroundColor: '#333', 
+    backgroundColor: '#2a273f', 
   },
   item: {
     padding: 16,
     marginBottom: 10,
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    backgroundColor: '#f2e9e1',
     borderRadius: 8,
   },
   darkItem: {
     backgroundColor: '#444', 
   },
   image: {
-    width: 100,
+    width: 300,
     height: 100,
     borderRadius: 5,
     paddingBottom: 10,

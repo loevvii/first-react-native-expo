@@ -1,5 +1,5 @@
-import React, { createContext, useState } from 'react';
-import { StyleSheet, Text, Switch, SafeAreaView, ImageBackground } from 'react-native';
+import React, { createContext, useState, useEffect, useRef } from 'react';
+import { StyleSheet, Text, Switch, SafeAreaView, Animated } from 'react-native';
 import Projects from './src/pages/Projects';
 import Profile from './src/pages/Profile';
 
@@ -14,44 +14,55 @@ export const ThemeContext = createContext({
 });
 
 export default function App() {
-  const [darkMode, setDarkMode] = useState(false);  
+  const [darkMode, setDarkMode] = useState(false);
+  const backgroundColor = useRef(new Animated.Value(0)).current;
+  const textColor = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    Animated.timing(backgroundColor, {
+      toValue: darkMode ? 1 : 0,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+    
+    Animated.timing(textColor, {
+      toValue: darkMode ? 1 : 0,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+  }, [darkMode]);
+
+  const interpolatedBackgroundColor = backgroundColor.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['#faf4ed', '#232136'],
+  });
+
+  const interpolatedTextColor = textColor.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['#000', '#fff'],
+  });
 
   return (
     <ThemeContext.Provider value={{ darkMode, setDarkMode }}>
-      <ImageBackground 
-        source={darkMode ? require('./src/pages/images/bg-dark.png') : require('./src/pages/images/bg-light.png')} 
-        style={styles.backgroundImage}
-      >
-        <SafeAreaView style={[styles.container, darkMode ? styles.darkContainer : styles.lightContainer]}>
-          <Profile />
-
-          <Text style={[styles.header, darkMode ? styles.darkText : styles.lightText]}>
-            My Projects
-          </Text>
-          <Projects />
-
-          <Text style={[styles.text, darkMode ? styles.darkText : styles.lightText]}>
-            {darkMode ? "Light Mode" : "Dark Mode"}
-          </Text>
-          <Switch 
-            value={darkMode} 
-            onValueChange={() => setDarkMode(!darkMode)} 
-            thumbColor={darkMode ? "#f4f3f4" : "#81b0ff"} 
-            trackColor={{ false: "#767577", true: "#81b0ff" }}
-          />
-        </SafeAreaView>
-      </ImageBackground>
+      <Animated.View style={[styles.container, { backgroundColor: interpolatedBackgroundColor }]}>  
+        <Profile />
+        <Animated.Text style={[styles.header, { color: interpolatedTextColor }]}>My Projects</Animated.Text>
+        <Projects />
+        <Animated.Text style={[styles.text, { color: interpolatedTextColor }]}>
+          {darkMode ? "Light Mode" : "Dark Mode"}
+        </Animated.Text>
+        <Switch 
+          value={darkMode} 
+          onValueChange={() => setDarkMode(!darkMode)} 
+          thumbColor={darkMode ? "#f4f3f4" : "#81b0ff"} 
+          trackColor={{ false: "#767577", true: "#81b0ff" }}
+        />
+      </Animated.View>
     </ThemeContext.Provider>
   );
 }
 
 const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,
-    justifyContent: 'center', 
-    alignItems: 'center',    
-    resizeMode: 'cover', 
-  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -59,21 +70,9 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 10,
   },
-  lightContainer: {
-    backgroundColor: 'transparent', 
-  },
-  darkContainer: {
-    backgroundColor: 'transparent',
-  },
   text: {
     fontSize: 20,
     marginBottom: 10,
-  },
-  lightText: {
-    color: '#000', 
-  },
-  darkText: {
-    color: '#fff', 
   },
   header: {
     fontSize: 30,
